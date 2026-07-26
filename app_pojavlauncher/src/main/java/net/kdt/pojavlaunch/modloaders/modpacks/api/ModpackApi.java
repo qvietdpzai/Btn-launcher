@@ -38,7 +38,7 @@ public interface ModpackApi {
 
     default void handleModpackInstallation(Context context, ModDetail modDetail, int selectedVersion) {
         if (modDetail == null) {
-            Tools.showErrorRemote(context, new IOException("No mod selected"));
+            Tools.showErrorRemote("No mod selected", new IOException("null modDetail"));
             return;
         }
         ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.global_waiting);
