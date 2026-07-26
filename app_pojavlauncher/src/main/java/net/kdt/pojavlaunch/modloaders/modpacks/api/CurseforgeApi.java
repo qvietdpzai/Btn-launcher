@@ -44,7 +44,7 @@ public class CurseforgeApi implements ModpackApi{
     private static final int CURSEFORGE_MOD_CLASS_ID = 6;
     private static final int CURSEFORGE_SHADER_CLASS_ID = 4546;
     private static final int CURSEFORGE_RESOURCEPACK_CLASS_ID = 12;
-    private static final int CURSEFORGE_SORT_RELEVANCY = 1;
+    private static final int CURSEFORGE_SORT_POPULARITY = 2;
     private static final int CURSEFORGE_PAGINATION_SIZE = 50;
     private static final int CURSEFORGE_PAGINATION_END_REACHED = -1;
     private static final int CURSEFORGE_PAGINATION_ERROR = -2;
@@ -77,7 +77,7 @@ public class CurseforgeApi implements ModpackApi{
         }
         params.put("classId", classId);
         params.put("searchFilter", searchFilters.name);
-        params.put("sortField", CURSEFORGE_SORT_RELEVANCY);
+        params.put("sortField", CURSEFORGE_SORT_POPULARITY);
         params.put("sortOrder", "desc");
         if(searchFilters.mcVersion != null && !searchFilters.mcVersion.isEmpty())
             params.put("gameVersion", searchFilters.mcVersion);

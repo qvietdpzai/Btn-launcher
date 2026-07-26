@@ -99,6 +99,16 @@ public class JavaRunner {
         userArguments.add(0, "-Xmx"+LauncherPreferences.PREF_RAM_ALLOCATION+"M");
 
         ArrayList<String> overridableArguments = new ArrayList<>(Arrays.asList(
+                "-XX:+UseG1GC",
+                "-XX:+ParallelRefProcEnabled",
+                "-XX:MaxGCPauseMillis=200",
+                "-XX:+UnlockExperimentalVMOptions",
+                "-XX:G1NewSizePercent=30",
+                "-XX:G1MaxNewSizePercent=40",
+                "-XX:G1HeapRegionSize=8M",
+                "-XX:G1ReservePercent=20",
+                "-XX:G1HeapWastePercent=5",
+                "-XX:G1MixedGCCountTarget=4",
                 "-Djava.home=" + runtimeHome,
                 "-Djava.io.tmpdir=" + Tools.DIR_CACHE.getAbsolutePath(),
                 "-Djna.boot.library.path=" + NATIVE_LIB_DIR,
