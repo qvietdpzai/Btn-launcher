@@ -65,6 +65,9 @@ public class MainMenuFragment extends Fragment {
         mInstallJarButton.setOnClickListener(v -> runInstallerWithConfirmation());
         mEditProfileButton.setOnClickListener(v -> mVersionSpinner.openProfileEditor(requireActivity()));
 
+        Button mSearchModsButton = view.findViewById(R.id.search_mods_button);
+        mSearchModsButton.setOnClickListener(v -> Tools.swapFragment(requireActivity(), SearchModFragment.class, SearchModFragment.TAG, null));
+
         mPlayButton.setOnClickListener(v -> ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true));
 
         mShareLogsButton.setOnClickListener((v) -> shareLog(requireContext()));
