@@ -176,7 +176,26 @@ public class LauncherPreferences {
     private static int findBestResolution(Context context, boolean isDevicePowerful) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int minSide = Math.min(metrics.widthPixels, metrics.heightPixels);
-        int targetSide = isDevicePowerful ? 1080 : 720;
+        int maxSide = Math.max(metrics.widthPixels, metrics.heightPixels);
+
+        // Auto-detect optimal target based on device specs
+        int targetSide;
+        if (isDevicePowerful) {
+            targetSide = 1080;
+        } else if (minSide >= 1440) {
+            // Very high res (QHD+) -> scale to 720p for performance
+            targetSide = 720;
+        } else if (minSide >= 1080) {
+            // Full HD -> keep 720p for non-powerful
+            targetSide = 720;
+        } else if (minSide >= 720) {
+            // HD -> slight scale or no scale
+            targetSide = minSide <= 800 ? 720 : minSide;
+        } else {
+            // Low res devices -> no scaling needed
+            targetSide = minSide;
+        }
+
         if (minSide <= targetSide) return 100; // No need to scale down
 
         float ratio = (100f * targetSide / minSide);

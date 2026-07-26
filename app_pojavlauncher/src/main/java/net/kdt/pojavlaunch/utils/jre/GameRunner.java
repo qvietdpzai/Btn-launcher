@@ -126,18 +126,29 @@ public class GameRunner {
         return LifecycleAwareAlertDialog.haltOnDialog(activity.getLifecycle(), activity, dialogCreator);
     }
 
-    // Autoswitch to LTW if supported, otherwise - crash with resId dialog message. Returns LTW renderer strings if succeeded
+    // Autoswitch to LTW if supported, otherwise fallback to Zink/Vulkan, then GL4ES. Returns renderer string
     private static String switchLtw(boolean hasLtw, Instance instance, AppCompatActivity activity, int resId) throws InterruptedException, IOException {
         if(hasLtw) {
             String ltwRenderer = "opengles3_ltw";
             instance.renderer = ltwRenderer;
             instance.write();
             return ltwRenderer;
-        }else {
-            showDialog(activity, resId);
-            System.exit(0);
-            return null;
         }
+        // Fallback: try Zink/Vulkan if LTW not available
+        boolean hasZink = RendererCompatUtil.getCompatibleRenderers(activity).rendererIds.contains("vulkan_zink");
+        if(hasZink) {
+            String zinkRenderer = "vulkan_zink";
+            instance.renderer = zinkRenderer;
+            instance.write();
+            Toast.makeText(activity, "LTW not available, using Vulkan/Zink fallback", Toast.LENGTH_LONG).show();
+            return zinkRenderer;
+        }
+        // Last resort: GL4ES
+        String gl4esRenderer = "opengles2";
+        instance.renderer = gl4esRenderer;
+        instance.write();
+        Toast.makeText(activity, "LTW/Zink not available, using GL4ES fallback", Toast.LENGTH_LONG).show();
+        return gl4esRenderer;
     }
 
     public static void launchGame(final AppCompatActivity activity, Account account,
@@ -271,7 +282,10 @@ public class GameRunner {
         javaArgList.add("-Dorg.lwjgl.opengl.libname=libGLMojo.so");
         javaArgList.add("-Dorg.lwjgl.freetype.libname="+ Tools.NATIVE_LIB_DIR+"/libfreetype.so");
 
-        activity.runOnUiThread(() -> Toast.makeText(activity, activity.getString(R.string.autoram_info_msg,LauncherPreferences.PREF_RAM_ALLOCATION), Toast.LENGTH_SHORT).show());
+        activity.runOnUiThread(() -> {
+            Toast.makeText(activity, activity.getString(R.string.autoram_info_msg,LauncherPreferences.PREF_RAM_ALLOCATION), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Renderer: " + rendererName, Toast.LENGTH_SHORT).show();
+        });
 
         Log.i("GameRunner", "Running with "+ launchArgs.toString());
 
