@@ -8,67 +8,109 @@ import com.kdt.mcgui.ProgressLayout;
 import net.kdt.pojavlaunch.PojavApplication;
 import git.artdeell.mojo.R;
 import net.kdt.pojavlaunch.Tools;
+import net.kdt.pojavlaunch.instances.Instances;
+import net.kdt.pojavlaunch.instances.Instance;
+import net.kdt.pojavlaunch.modloaders.modpacks.models.Constants;
 import net.kdt.pojavlaunch.modloaders.modpacks.models.ModDetail;
 import net.kdt.pojavlaunch.modloaders.modpacks.models.ModItem;
 import net.kdt.pojavlaunch.modloaders.modpacks.models.SearchFilters;
 import net.kdt.pojavlaunch.modloaders.modpacks.models.SearchResult;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
  */
 public interface ModpackApi {
 
-    /**
-     * @param searchFilters Filters
-     * @param previousPageResult The result from the previous page
-     * @return the list of mod items from specified offset
-     */
     SearchResult searchMod(SearchFilters searchFilters, SearchResult previousPageResult);
 
-    /**
-     * @param searchFilters Filters
-     * @return A list of mod items
-     */
     default SearchResult searchMod(SearchFilters searchFilters) {
         return searchMod(searchFilters, null);
     }
 
-    /**
-     * Fetch the mod details
-     * @param item The moditem that was selected
-     * @return Detailed data about a mod(pack)
-     */
     ModDetail getModDetails(ModItem item);
 
-    /**
-     * Download and install the modpack
-     * @param modDetail The mod detail data
-     * @param selectedVersion The selected version
-     */
     default void handleModpackInstallation(Context context, ModDetail modDetail, int selectedVersion) {
-        // Doing this here since when starting installation, the progress does not start immediately
-        // which may lead to two concurrent installations (very bad)
         ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.global_waiting);
         PojavApplication.sExecutorService.execute(() -> {
             try {
-                installModpack(modDetail, selectedVersion);
+                if (modDetail.contentType == Constants.CONTENT_TYPE_MOD ||
+                    modDetail.contentType == Constants.CONTENT_TYPE_SHADER ||
+                    modDetail.contentType == Constants.CONTENT_TYPE_RESOURCE_PACK) {
+                    installSingleContent(context, modDetail, selectedVersion);
+                } else {
+                    installModpack(modDetail, selectedVersion);
+                }
             }catch (IOException e) {
                 Tools.showErrorRemote(context, R.string.modpack_install_download_failed, e);
+            } finally {
+                ProgressLayout.clearProgress(ProgressLayout.INSTALL_MODPACK);
             }
         });
     }
 
+    static void installSingleContent(Context context, ModDetail modDetail, int selectedVersion) throws IOException {
+        Instance instance = Instances.loadSelectedInstance();
+        if (instance == null) {
+            throw new IOException(context.getString(R.string.no_instance));
+        }
+        File gameDir = instance.getGameDirectory();
+        String folderName;
+        switch (modDetail.contentType) {
+            case Constants.CONTENT_TYPE_SHADER:
+                folderName = "shaderpacks";
+                break;
+            case Constants.CONTENT_TYPE_RESOURCE_PACK:
+                folderName = "resourcepacks";
+                break;
+            default:
+                folderName = "mods";
+                break;
+        }
+        File targetDir = new File(gameDir, folderName);
+        targetDir.mkdirs();
+
+        String fileUrl = modDetail.versionUrls[selectedVersion];
+        String hash = modDetail.versionHashes[selectedVersion];
+        String fileName = extractFileNameFromUrl(fileUrl);
+        File targetFile = new File(targetDir, fileName);
+
+        ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 0,
+                "Downloading " + modDetail.title, 0, 1);
+
+        downloadFile(fileUrl, targetFile);
+
+        ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 100,
+                "Installed " + modDetail.title + " to " + folderName, 1, 1);
+    }
+
+    static String extractFileNameFromUrl(String url) {
+        String path = url.split("\\?")[0];
+        int lastSlash = path.lastIndexOf('/');
+        if (lastSlash >= 0 && lastSlash < path.length() - 1) {
+            return path.substring(lastSlash + 1);
+        }
+        return "downloaded_file";
+    }
+
+    static void downloadFile(String fileUrl, File targetFile) throws IOException {
+        try (InputStream in = new URL(fileUrl).openStream();
+             FileOutputStream out = new FileOutputStream(targetFile)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+        }
+    }
+
     ModLoader installLocalModpack(String modpackName, File modpackFile, String icon) throws IOException;
 
-    /**
-     * Install the mod(pack).
-     * May require the download of additional files.
-     * May requires launching the installation of a modloader
-     * @param modDetail The mod detail data
-     * @param selectedVersion The selected version
-     */
     ModLoader installModpack(ModDetail modDetail, int selectedVersion) throws IOException;
 }
