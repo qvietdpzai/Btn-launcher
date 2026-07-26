@@ -82,11 +82,12 @@ public interface ModpackApi {
         File targetFile = new File(targetDir, fileName);
 
         ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 0,
-                R.string.modpack_download_downloading_metadata);
+                "Downloading " + modDetail.title);
 
         downloadFile(fileUrl, targetFile);
 
-        ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 100);
+        ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 100,
+                "Installed to " + folderName);
     }
 
     static String extractFileNameFromUrl(String url) {
