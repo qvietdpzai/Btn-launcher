@@ -176,7 +176,6 @@ public class LauncherPreferences {
     private static int findBestResolution(Context context, boolean isDevicePowerful) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int minSide = Math.min(metrics.widthPixels, metrics.heightPixels);
-        int maxSide = Math.max(metrics.widthPixels, metrics.heightPixels);
 
         // Auto-detect optimal target based on device specs
         int targetSide;
