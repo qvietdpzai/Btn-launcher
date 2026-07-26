@@ -31,4 +31,10 @@
     <dimen name="fragment_padding_medium">@dimen/_10sdp</dimen>
     <!-- Misc paddings -->
     <dimen name="profile_editor_image_padding">@dimen/padding_small</dimen>
+
+    <!-- Sidebar (Zalith style) -->
+    <dimen name="sidebar_width_land">220dp</dimen>
+    <dimen name="sidebar_bottom_height">140dp</dimen>
+    <dimen name="sidebar_padding">@dimen/_16sdp</dimen>
+    <dimen name="sidebar_play_button_height">@dimen/_52sdp</dimen>
 </resources>

@@ -26,4 +26,7 @@
     <color name="button_play_pressed">#138496</color>
     <color name="button_menu_normal">#16161E</color>
     <color name="button_menu_pressed">#1E1E28</color>
+
+    <color name="sidebar_background">#0C0C12</color>
+    <color name="sidebar_divider">#1A1A22</color>
 </resources>
