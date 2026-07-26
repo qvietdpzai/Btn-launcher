@@ -37,6 +37,10 @@ public interface ModpackApi {
     ModDetail getModDetails(ModItem item);
 
     default void handleModpackInstallation(Context context, ModDetail modDetail, int selectedVersion) {
+        if (modDetail == null) {
+            Tools.showErrorRemote(context, new IOException("No mod selected"));
+            return;
+        }
         ProgressLayout.setProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.global_waiting);
         PojavApplication.sExecutorService.execute(() -> {
             try {
@@ -56,6 +60,12 @@ public interface ModpackApi {
     }
 
     static void installSingleContent(Context context, ModDetail modDetail, int selectedVersion) throws IOException {
+        if (modDetail == null || modDetail.versionUrls == null) {
+            throw new IOException("Invalid mod detail");
+        }
+        if (selectedVersion < 0 || selectedVersion >= modDetail.versionUrls.length) {
+            selectedVersion = 0;
+        }
         Instance instance = Instances.loadSelectedInstance();
         if (instance == null) {
             throw new IOException(context.getString(R.string.no_instance));
@@ -77,7 +87,8 @@ public interface ModpackApi {
         targetDir.mkdirs();
 
         String fileUrl = modDetail.versionUrls[selectedVersion];
-        String hash = modDetail.versionHashes[selectedVersion];
+        String hash = (modDetail.versionHashes != null && selectedVersion < modDetail.versionHashes.length)
+                ? modDetail.versionHashes[selectedVersion] : null;
         String fileName = extractFileNameFromUrl(fileUrl);
         File targetFile = new File(targetDir, fileName);
 
