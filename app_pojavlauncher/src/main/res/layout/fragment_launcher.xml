@@ -114,12 +114,10 @@
 		android:layout_height="@dimen/_52sdp"
 		android:background="@android:color/transparent"
 		android:drawableEnd="@drawable/spinner_arrow"
-
 		app:drawableEndSize="@dimen/padding_heavy"
 		app:drawableStartIntegerScaling="true"
 		app:drawableStartSize="@dimen/_36sdp"
 		app:drawableEndPadding="@dimen/_1sdp"
-
 		app:layout_constraintBottom_toTopOf="@id/play_button"
 		app:layout_constraintEnd_toStartOf="@+id/edit_profile_button"
 		app:layout_constraintStart_toStartOf="parent" />
@@ -129,12 +127,10 @@
 		android:layout_width="@dimen/_52sdp"
 		android:layout_height="@dimen/_52sdp"
 		android:background="?android:attr/selectableItemBackground"
-
 		android:src="@drawable/ic_px_edit"
 		app:layout_constraintBottom_toBottomOf="@+id/mc_version_spinner"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/mc_version_spinner" />
-
 
 	<View
 		android:id="@+id/_background_display_view"
@@ -142,7 +138,6 @@
 		android:layout_height="0dp"
 		android:background="@color/background_bottom_bar"
 		android:translationZ="-1dp"
-
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintTop_toTopOf="@id/mc_version_spinner" />
 
@@ -150,10 +145,8 @@
 		android:id="@+id/play_button"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/_62sdp"
-
 		android:layout_marginHorizontal="@dimen/_17sdp"
 		android:layout_marginBottom="@dimen/_15sdp"
-
 		android:textAllCaps="true"
 		android:text="@string/main_play"
 		app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +154,7 @@
 		android:textColor="@color/primary_text"
 		android:textSize="@dimen/_18ssp"
 		android:textStyle="bold"
-		android:letterSpacing="0.05"
+		android:letterSpacing="0.08"
 		android:paddingVertical="@dimen/padding_moderate"
 		android:drawablePadding="@dimen/padding_medium" />
 
