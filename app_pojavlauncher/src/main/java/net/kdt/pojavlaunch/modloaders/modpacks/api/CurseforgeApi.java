@@ -42,6 +42,8 @@ public class CurseforgeApi implements ModpackApi{
     private static final int CURSEFORGE_MODPACK_CLASS_ID = 4471;
     // https://api.curseforge.com/v1/categories?gameId=432 and search for "Mods" (case-sensitive)
     private static final int CURSEFORGE_MOD_CLASS_ID = 6;
+    private static final int CURSEFORGE_SHADER_CLASS_ID = 4546;
+    private static final int CURSEFORGE_RESOURCEPACK_CLASS_ID = 12;
     private static final int CURSEFORGE_SORT_RELEVANCY = 1;
     private static final int CURSEFORGE_PAGINATION_SIZE = 50;
     private static final int CURSEFORGE_PAGINATION_END_REACHED = -1;
@@ -58,7 +60,22 @@ public class CurseforgeApi implements ModpackApi{
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("gameId", CURSEFORGE_MC_GAME_ID);
-        params.put("classId", searchFilters.isModpack ? CURSEFORGE_MODPACK_CLASS_ID : CURSEFORGE_MOD_CLASS_ID);
+        int classId;
+        switch (searchFilters.contentType) {
+            case Constants.CONTENT_TYPE_SHADER:
+                classId = CURSEFORGE_SHADER_CLASS_ID;
+                break;
+            case Constants.CONTENT_TYPE_RESOURCE_PACK:
+                classId = CURSEFORGE_RESOURCEPACK_CLASS_ID;
+                break;
+            case Constants.CONTENT_TYPE_MOD:
+                classId = CURSEFORGE_MOD_CLASS_ID;
+                break;
+            default:
+                classId = CURSEFORGE_MODPACK_CLASS_ID;
+                break;
+        }
+        params.put("classId", classId);
         params.put("searchFilter", searchFilters.name);
         params.put("sortField", CURSEFORGE_SORT_RELEVANCY);
         params.put("sortOrder", "desc");
@@ -83,7 +100,7 @@ public class CurseforgeApi implements ModpackApi{
                 continue;
             }
             ModItem modItem = new ModItem(Constants.SOURCE_CURSEFORGE,
-                    searchFilters.isModpack,
+                    searchFilters.contentType,
                     dataElement.get("id").getAsString(),
                     dataElement.get("name").getAsString(),
                     dataElement.get("summary").getAsString(),

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SearchFilters {
     public boolean isModpack;
+    public int contentType = Constants.CONTENT_TYPE_MODPACK;
     public String name;
     @Nullable public String mcVersion;
 

@@ -50,7 +50,22 @@ public class ModrinthApi implements ModpackApi{
         HashMap<String, Object> params = new HashMap<>();
         StringBuilder facetString = new StringBuilder();
         facetString.append("[");
-        facetString.append(String.format("[\"project_type:%s\"]", searchFilters.isModpack ? "modpack" : "mod"));
+        String projectType;
+        switch (searchFilters.contentType) {
+            case Constants.CONTENT_TYPE_MOD:
+                projectType = "mod";
+                break;
+            case Constants.CONTENT_TYPE_SHADER:
+                projectType = "shader";
+                break;
+            case Constants.CONTENT_TYPE_RESOURCE_PACK:
+                projectType = "resourcepack";
+                break;
+            default:
+                projectType = "modpack";
+                break;
+        }
+        facetString.append(String.format("[\"project_type:%s\"]", projectType));
         if(searchFilters.mcVersion != null && !searchFilters.mcVersion.isEmpty())
             facetString.append(String.format(",[\"versions:%s\"]", searchFilters.mcVersion));
         facetString.append("]");
@@ -69,9 +84,25 @@ public class ModrinthApi implements ModpackApi{
         ModItem[] items = new ModItem[responseHits.size()];
         for(int i=0; i<responseHits.size(); ++i){
             JsonObject hit = responseHits.get(i).getAsJsonObject();
+            String type = hit.get("project_type").getAsString();
+            int contentType;
+            switch (type) {
+                case "mod":
+                    contentType = Constants.CONTENT_TYPE_MOD;
+                    break;
+                case "shader":
+                    contentType = Constants.CONTENT_TYPE_SHADER;
+                    break;
+                case "resourcepack":
+                    contentType = Constants.CONTENT_TYPE_RESOURCE_PACK;
+                    break;
+                default:
+                    contentType = Constants.CONTENT_TYPE_MODPACK;
+                    break;
+            }
             items[i] = new ModItem(
                     Constants.SOURCE_MODRINTH,
-                    hit.get("project_type").getAsString().equals("modpack"),
+                    contentType,
                     hit.get("project_id").getAsString(),
                     hit.get("title").getAsString(),
                     hit.get("description").getAsString(),

@@ -8,11 +8,40 @@
     android:paddingHorizontal="@dimen/fragment_padding_medium"
     >
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/search_mod_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabGravity="start"
+        app:tabIndicatorColor="@color/minebutton_color"
+        app:tabSelectedTextColor="@color/primary_text"
+        app:tabTextColor="@color/secondary_text"
+        android:layout_marginTop="@dimen/fragment_padding_medium"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/content_type_mods" />
 
-    <!--
-        Cosmetic layout to have a better scrolling separation
-     -->
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/content_type_shaders" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/content_type_resource_packs" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/content_type_modpacks" />
+
+    </com.google.android.material.tabs.TabLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/search_mod_overlay"
         android:layout_width="match_parent"
@@ -21,14 +50,10 @@
         android:background="@drawable/background_overlay"
         android:paddingHorizontal="@dimen/padding_medium"
         android:paddingVertical="@dimen/padding_medium"
-        android:layout_marginTop="@dimen/fragment_padding_medium"
         android:layout_marginHorizontal="@dimen/fragment_padding_medium"
 
-        app:layout_constraintTop_toTopOf="parent"
-
-
+        app:layout_constraintTop_toBottomOf="@id/search_mod_tabs"
         >
-        <!-- Search text -->
         <EditText
             android:id="@+id/search_mod_edittext"
             android:layout_width="0dp"
@@ -59,7 +84,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/search_mod_edittext"
             app:layout_constraintBottom_toBottomOf="@id/search_mod_edittext"
-
             />
 
         <ProgressBar
@@ -72,13 +96,7 @@
             app:layout_constraintTop_toBottomOf="@+id/search_mod_edittext"
             tools:layout_editor_absoluteX="13dp" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_mod_list"
@@ -88,7 +106,7 @@
         android:clipToPadding="false"
 
         app:layout_constraintBottom_toTopOf="@id/mineButton_import_local_modpack"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_mod_overlay"
         android:layout_marginBottom="@dimen/padding_moderate"
         />
 
