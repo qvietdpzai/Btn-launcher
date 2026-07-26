@@ -60,6 +60,8 @@
             android:name="net.kdt.pojavlaunch.LauncherActivity"
             android:label="@string/app_short_name"
             android:exported="true"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="adjustResize">
             <intent-filter android:label="@string/import_local_modpack">
                 <action android:name="android.intent.action.VIEW" />
