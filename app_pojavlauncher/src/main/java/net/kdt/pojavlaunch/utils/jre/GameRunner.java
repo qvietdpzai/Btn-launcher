@@ -135,19 +135,16 @@ public class GameRunner {
             return ltwRenderer;
         }
         // Fallback: try Zink/Vulkan if LTW not available
-        boolean hasZink = RendererCompatUtil.getCompatibleRenderers(activity).rendererIds.contains("vulkan_zink");
-        if(hasZink) {
+        if(RendererCompatUtil.checkRendererCompatible(activity, "vulkan_zink")) {
             String zinkRenderer = "vulkan_zink";
             instance.renderer = zinkRenderer;
             instance.write();
-            Toast.makeText(activity, "LTW not available, using Vulkan/Zink fallback", Toast.LENGTH_LONG).show();
             return zinkRenderer;
         }
         // Last resort: GL4ES
         String gl4esRenderer = "opengles2";
         instance.renderer = gl4esRenderer;
         instance.write();
-        Toast.makeText(activity, "LTW/Zink not available, using GL4ES fallback", Toast.LENGTH_LONG).show();
         return gl4esRenderer;
     }
 
