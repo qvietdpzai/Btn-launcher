@@ -127,6 +127,7 @@ android {
         release {
             // Don't set to true or java.awt will be a.a or something similar.
             minifyEnabled false
+            signingConfig signingConfigs.customDebug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             // defaultConfig already set
             // multiDexEnabled = true
