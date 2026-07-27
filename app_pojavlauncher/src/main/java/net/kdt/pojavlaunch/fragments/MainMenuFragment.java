@@ -30,6 +30,7 @@ import net.kdt.pojavlaunch.instances.Instances;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.utils.FileUtils;
 import net.kdt.pojavlaunch.zerotier.ZeroTierManager;
+import net.kdt.pojavlaunch.aiturbo.AiTurboManager;
 
 import java.io.File;
 
@@ -77,6 +78,9 @@ public class MainMenuFragment extends Fragment {
 
         Button mZeroTierButton = view.findViewById(R.id.zerotier_button);
         mZeroTierButton.setOnClickListener(v -> toggleZeroTier(mZeroTierButton));
+
+        Button mAiTurboButton = view.findViewById(R.id.aiturbo_button);
+        mAiTurboButton.setOnClickListener(v -> toggleAiTurbo(mAiTurboButton));
 
 
         mNewsButton.setOnLongClickListener((v)->{
@@ -143,8 +147,24 @@ public class MainMenuFragment extends Fragment {
 
                 @Override
                 public void onDownloadProgress(int progress) {}
-            });
-            ztManager.autoConnect();
+        });
+        ztManager.autoConnect();
+        }
+    }
+
+    private void toggleAiTurbo(Button button) {
+        AiTurboManager aiTurbo = AiTurboManager.getInstance(requireContext());
+        if (aiTurbo.isEnabled()) {
+            aiTurbo.setEnabled(false);
+            aiTurbo.stopMonitoring();
+            button.setText(R.string.mcl_button_aiturbo);
+            Toast.makeText(requireContext(), R.string.aiturbo_disabled, Toast.LENGTH_SHORT).show();
+        } else {
+            aiTurbo.setEnabled(true);
+            aiTurbo.analyze();
+            aiTurbo.startMonitoring();
+            button.setText(R.string.mcl_button_aiturbo);
+            Toast.makeText(requireContext(), R.string.aiturbo_enabled, Toast.LENGTH_SHORT).show();
         }
     }
 

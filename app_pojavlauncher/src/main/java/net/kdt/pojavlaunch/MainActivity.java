@@ -28,6 +28,8 @@ import android.view.ViewPropertyAnimator;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import net.kdt.pojavlaunch.aiturbo.AiTurboManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -387,6 +389,11 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     }
 
     private void runCraft(String versionId, File[] classpath) throws Throwable {
+        // Apply AI Turbo optimizations before launch
+        AiTurboManager aiTurbo = AiTurboManager.getInstance(getApplicationContext());
+        if (aiTurbo.isEnabled()) {
+            aiTurbo.applyOptimizations(instance);
+        }
         String renderer = instance.getLaunchRenderer();
         if(!RendererCompatUtil.checkRendererCompatible(this, renderer)) {
             RendererCompatUtil.RenderersList renderersList = RendererCompatUtil.getCompatibleRenderers(this);
