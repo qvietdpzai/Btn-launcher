@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch.zerotier;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,12 +13,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * ZeroTier auto-connect manager.
- * Automatically downloads ZeroTier binary from GitHub releases if not present.
- */
 public class ZeroTierManager {
-    private static final String TAG = "ZeroTierManager";
     public static final String ZEROTIER_NETWORK_ID = "b103a835d2a2c7b5";
 
     private static final String ZT_BINARY_URL = "https://github.com/zerotier/ZeroTierOne/releases/download/1.14.2/zerotier_1.14.2_android_arm64";
@@ -57,10 +51,6 @@ public class ZeroTierManager {
         mCallback = callback;
     }
 
-    /**
-     * Initialize and auto-join the ZeroTier network.
-     * Downloads ZeroTier binary if not present.
-     */
     public void autoConnect() {
         if (mInitialized) return;
         mInitialized = true;
@@ -69,22 +59,18 @@ public class ZeroTierManager {
             try {
                 File ztBinary = getZeroTierBinary();
                 if (!ztBinary.exists()) {
-                    Log.i(TAG, "ZeroTier binary not found, downloading...");
                     downloadZeroTier();
                     ztBinary = getZeroTierBinary();
                 }
 
                 if (ztBinary.exists()) {
-                    Log.i(TAG, "ZeroTier binary found, joining network: " + ZEROTIER_NETWORK_ID);
                     joinNetwork(ZEROTIER_NETWORK_ID);
                 } else {
-                    Log.w(TAG, "ZeroTier binary not available after download");
                     mMainHandler.post(() -> {
                         if (mCallback != null) mCallback.onError("ZeroTier download failed");
                     });
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Failed to initialize ZeroTier", e);
                 mMainHandler.post(() -> {
                     if (mCallback != null) mCallback.onError(e.getMessage());
                 });
@@ -107,10 +93,7 @@ public class ZeroTierManager {
             connection.setRequestProperty("User-Agent", "BTNLauncher/1.0");
 
             int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                Log.w(TAG, "Download failed with code: " + responseCode);
-                return;
-            }
+            if (responseCode != 200) return;
 
             int fileSize = connection.getContentLength();
             File outputFile = getZeroTierBinary();
@@ -133,17 +116,11 @@ public class ZeroTierManager {
                 }
             }
 
-            // Rename temp to final
             if (outputFile.exists()) outputFile.delete();
             tempFile.renameTo(outputFile);
-
-            // Make executable
             outputFile.setExecutable(true, false);
             outputFile.setReadable(true, false);
-
-            Log.i(TAG, "ZeroTier binary downloaded successfully (" + outputFile.length() + " bytes)");
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to download ZeroTier", e);
+        } catch (Exception ignored) {
         } finally {
             if (connection != null) connection.disconnect();
             mDownloading = false;
@@ -152,14 +129,11 @@ public class ZeroTierManager {
 
     private void joinNetwork(String networkId) {
         try {
-            // Try ZeroTier SDK via reflection first
             Class.forName("com.zerotier.sdk.ZeroTierService");
             joinViaSDK(networkId);
         } catch (ClassNotFoundException e) {
-            // SDK not available, use binary directly
             joinViaBinary(networkId);
         } catch (Exception e) {
-            Log.e(TAG, "SDK join failed, trying binary", e);
             joinViaBinary(networkId);
         }
     }
@@ -177,12 +151,10 @@ public class ZeroTierManager {
             joinMethod.invoke(node, networkIdLong);
 
             mConnected = true;
-            Log.i(TAG, "Joined ZeroTier network via SDK: " + networkId);
             mMainHandler.post(() -> {
                 if (mCallback != null) mCallback.onConnected(networkId);
             });
         } catch (Exception e) {
-            Log.e(TAG, "SDK join failed", e);
             joinViaBinary(networkId);
         }
     }
@@ -190,17 +162,10 @@ public class ZeroTierManager {
     private void joinViaBinary(String networkId) {
         try {
             File ztBinary = getZeroTierBinary();
-            if (!ztBinary.exists()) {
-                Log.e(TAG, "ZeroTier binary not found");
-                return;
-            }
+            if (!ztBinary.exists()) return;
 
-            // Start ZeroTier daemon
             ProcessBuilder pb = new ProcessBuilder(
-                ztBinary.getAbsolutePath(),
-                "-q",
-                "join",
-                networkId
+                ztBinary.getAbsolutePath(), "-q", "join", networkId
             );
             pb.directory(mContext.getFilesDir());
             pb.redirectErrorStream(true);
@@ -209,18 +174,15 @@ public class ZeroTierManager {
 
             if (exitCode == 0) {
                 mConnected = true;
-                Log.i(TAG, "Joined ZeroTier network via binary: " + networkId);
                 mMainHandler.post(() -> {
                     if (mCallback != null) mCallback.onConnected(networkId);
                 });
             } else {
-                // Try running as daemon first, then join
                 startZeroTierDaemon();
                 Thread.sleep(2000);
                 joinViaCLI(networkId);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Binary join failed", e);
             joinViaCLI(networkId);
         }
     }
@@ -228,15 +190,11 @@ public class ZeroTierManager {
     private void startZeroTierDaemon() {
         try {
             File ztBinary = getZeroTierBinary();
-            ProcessBuilder pb = new ProcessBuilder(
-                ztBinary.getAbsolutePath()
-            );
+            ProcessBuilder pb = new ProcessBuilder(ztBinary.getAbsolutePath());
             pb.directory(mContext.getFilesDir());
             pb.redirectErrorStream(true);
             pb.start();
-            Log.i(TAG, "ZeroTier daemon started");
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to start ZeroTier daemon", e);
+        } catch (Exception ignored) {
         }
     }
 
@@ -244,9 +202,7 @@ public class ZeroTierManager {
         try {
             File ztBinary = getZeroTierBinary();
             ProcessBuilder pb = new ProcessBuilder(
-                ztBinary.getAbsolutePath(),
-                "join",
-                networkId
+                ztBinary.getAbsolutePath(), "join", networkId
             );
             pb.directory(mContext.getFilesDir());
             pb.redirectErrorStream(true);
@@ -254,18 +210,16 @@ public class ZeroTierManager {
             int exitCode = process.waitFor();
 
             mConnected = (exitCode == 0);
-            Log.i(TAG, "ZeroTier CLI join result: " + (mConnected ? "success" : "failed (code " + exitCode + ")"));
             mMainHandler.post(() -> {
                 if (mConnected) {
                     if (mCallback != null) mCallback.onConnected(networkId);
                 } else {
-                    if (mCallback != null) mCallback.onError("ZeroTier join failed with code " + exitCode);
+                    if (mCallback != null) mCallback.onError("ZeroTier join failed");
                 }
             });
         } catch (Exception e) {
-            Log.e(TAG, "CLI join failed", e);
             mMainHandler.post(() -> {
-                if (mCallback != null) mCallback.onError("ZeroTier not available: " + e.getMessage());
+                if (mCallback != null) mCallback.onError("ZeroTier not available");
             });
         }
     }
@@ -282,8 +236,7 @@ public class ZeroTierManager {
             mMainHandler.post(() -> {
                 if (mCallback != null) mCallback.onDisconnected(ZEROTIER_NETWORK_ID);
             });
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to disconnect", e);
+        } catch (Exception ignored) {
         }
     }
 
