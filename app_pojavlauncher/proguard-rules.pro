@@ -24,4 +24,19 @@
 # Option screens
  -keep class net.kdt.pojavlaunch.prefs.screens** {*;}
 
+# Gson model classes - keep all fields for serialization/deserialization
+-keep class net.kdt.pojavlaunch.modloaders.modpacks.models.** { *; }
+-keep class net.kdt.pojavlaunch.modloaders.BTAUtils$** { *; }
+-keep class net.kdt.pojavlaunch.modloaders.FabriclikeUtils$FabricVersion { *; }
+-keep class net.kdt.pojavlaunch.authenticator.model.** { *; }
+-keep class net.kdt.pojavlaunch.JAssets { *; }
+-keep class net.kdt.pojavlaunch.JVersionList$Version { *; }
+-keep class net.kdt.pojavlaunch.customcontrols.ControlData { *; }
+-keep class net.kdt.pojavlaunch.customcontrols.ControlDrawerData { *; }
+-keep class net.kdt.pojavlaunch.customcontrols.CustomControls { *; }
+-keep class net.kdt.pojavlaunch.instances.profcompat.** { *; }
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+
 
