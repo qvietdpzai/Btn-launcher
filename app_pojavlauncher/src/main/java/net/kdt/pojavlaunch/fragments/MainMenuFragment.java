@@ -29,6 +29,7 @@ import net.kdt.pojavlaunch.instances.Instance;
 import net.kdt.pojavlaunch.instances.Instances;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.utils.FileUtils;
+import net.kdt.pojavlaunch.zerotier.ZeroTierManager;
 
 import java.io.File;
 
@@ -74,6 +75,9 @@ public class MainMenuFragment extends Fragment {
 
         mOpenDirectoryButton.setOnClickListener((v)-> openGameDirectory(v.getContext()));
 
+        Button mZeroTierButton = view.findViewById(R.id.zerotier_button);
+        mZeroTierButton.setOnClickListener(v -> toggleZeroTier(mZeroTierButton));
+
 
         mNewsButton.setOnLongClickListener((v)->{
             Tools.swapFragment(requireActivity(), GamepadMapperFragment.class, GamepadMapperFragment.TAG, null);
@@ -92,6 +96,55 @@ public class MainMenuFragment extends Fragment {
             openPath(context, gameDirectory, false);
         }else {
             Toast.makeText(context, R.string.gamedir_open_failed, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void toggleZeroTier(Button button) {
+        ZeroTierManager ztManager = ZeroTierManager.getInstance(requireContext());
+        if (ztManager.isConnected()) {
+            ztManager.disconnect();
+            button.setText(R.string.mcl_button_zerotier);
+            Toast.makeText(requireContext(), R.string.zerotier_disconnected, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), R.string.zerotier_connecting, Toast.LENGTH_SHORT).show();
+            button.setEnabled(false);
+            ztManager.setCallback(new ZeroTierManager.ConnectionCallback() {
+                @Override
+                public void onConnected(String networkId) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            button.setEnabled(true);
+                            button.setText(R.string.mcl_button_zerotier);
+                            Toast.makeText(requireContext(), R.string.zerotier_connected, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+
+                @Override
+                public void onDisconnected(String networkId) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            button.setEnabled(true);
+                            button.setText(R.string.mcl_button_zerotier);
+                        });
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            button.setEnabled(true);
+                            button.setText(R.string.mcl_button_zerotier);
+                            Toast.makeText(requireContext(), R.string.zerotier_error, Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+
+                @Override
+                public void onDownloadProgress(int progress) {}
+            });
+            ztManager.autoConnect();
         }
     }
 
