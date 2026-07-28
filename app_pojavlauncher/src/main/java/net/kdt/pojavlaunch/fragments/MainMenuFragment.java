@@ -110,7 +110,6 @@ public class MainMenuFragment extends Fragment {
             button.setText(R.string.mcl_button_zerotier);
             Toast.makeText(requireContext(), R.string.zerotier_disconnected, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(requireContext(), R.string.zerotier_connecting, Toast.LENGTH_SHORT).show();
             button.setEnabled(false);
             ztManager.setCallback(new ZeroTierManager.ConnectionCallback() {
                 @Override
@@ -118,7 +117,7 @@ public class MainMenuFragment extends Fragment {
                     if (isAdded()) {
                         requireActivity().runOnUiThread(() -> {
                             button.setEnabled(true);
-                            button.setText(R.string.mcl_button_zerotier);
+                            button.setText(R.string.mcl_button_zerotier + " ✓");
                             Toast.makeText(requireContext(), R.string.zerotier_connected, Toast.LENGTH_SHORT).show();
                         });
                     }
@@ -140,15 +139,21 @@ public class MainMenuFragment extends Fragment {
                         requireActivity().runOnUiThread(() -> {
                             button.setEnabled(true);
                             button.setText(R.string.mcl_button_zerotier);
-                            Toast.makeText(requireContext(), R.string.zerotier_error, Toast.LENGTH_SHORT).show();
+                            if (error.contains("not installed")) {
+                                new android.app.AlertDialog.Builder(requireContext())
+                                    .setTitle("ZeroTier not found")
+                                    .setMessage("Install ZeroTier from Play Store?")
+                                    .setPositiveButton("Install", (d, w) -> ztManager.openPlayStore())
+                                    .setNegativeButton("Cancel", null)
+                                    .show();
+                            } else {
+                                Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show();
+                            }
                         });
                     }
                 }
-
-                @Override
-                public void onDownloadProgress(int progress) {}
-        });
-        ztManager.autoConnect();
+            });
+            ztManager.connect();
         }
     }
 

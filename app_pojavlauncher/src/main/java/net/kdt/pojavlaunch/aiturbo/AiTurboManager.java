@@ -240,13 +240,11 @@ public class AiTurboManager {
     }
 
     private void optimizeRenderer(Instance instance) {
-        // Renderer optimization is handled in GameRunner via the fallback chain
-        // Here we just ensure the best default
-        if (mDeviceProfile.deviceTier == 1) {
-            // Low-end: prefer GL4ES (opengles2) for stability
+        // Let GameRunner's switchLtw handle renderer selection
+        // Only ensure GL4ES for very low-end devices
+        if (mDeviceProfile.deviceTier == 1 && mDeviceProfile.totalRamMB < 2048) {
             instance.renderer = "opengles2";
         }
-        // Mid/High: let GameRunner's switchLtw handle it
     }
 
     private void applyJvmOptimizations(Instance instance) {
