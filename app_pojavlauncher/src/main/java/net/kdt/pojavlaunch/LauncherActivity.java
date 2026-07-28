@@ -207,13 +207,6 @@ public class LauncherActivity extends BaseActivity {
         mProgressLayout.observe(ProgressLayout.DOWNLOAD_VERSION_LIST);
         mProgressLayout.observe(ProgressLayout.INSTANCE_INSTALL);
         mProgressLayout.observe(ProgressLayout.DATA_MIGRATION);
-
-        // Auto-connect to ZeroTier network for multiplayer
-        try {
-            net.kdt.pojavlaunch.zerotier.ZeroTierManager.getInstance(this).autoConnect();
-        } catch (Exception e) {
-            android.util.Log.w("LauncherActivity", "ZeroTier auto-connect skipped", e);
-        }
     }
 
     @Override
