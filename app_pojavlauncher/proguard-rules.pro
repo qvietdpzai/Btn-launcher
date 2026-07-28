@@ -39,4 +39,15 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 
+# Gson: prevent R8 from merging/collapsing classes used by Gson
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+-keep,allowobfuscation class * extends com.google.gson.TypeAdapter
+-keepclassmembers class * {
+    <fields>;
+}
+-keep class * implements com.google.gson.TypeAdapterFactory
+-dontwarn com.google.gson.**
+
 
