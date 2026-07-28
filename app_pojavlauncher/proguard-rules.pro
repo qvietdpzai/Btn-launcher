@@ -34,7 +34,7 @@
 -keep class net.kdt.pojavlaunch.customcontrols.ControlData { *; }
 -keep class net.kdt.pojavlaunch.customcontrols.ControlDrawerData { *; }
 -keep class net.kdt.pojavlaunch.customcontrols.CustomControls { *; }
--keep class net.kdt.pojavlaunch.instances.profcompat.** { *; }
+-keep class net.kdt.pojavlaunch.instances.** { *; }
 -keep class com.google.gson.** { *; }
 -keepattributes Signature
 -keepattributes *Annotation*
