@@ -27,39 +27,23 @@ public class RendererCompatUtil {
         return false;
     }
 
-    /** Return the renderers that are compatible with this device */
+    /** Return all renderers - let user choose freely */
     public static RenderersList getCompatibleRenderers(Context context) {
         if(sCompatibleRenderers != null) return sCompatibleRenderers;
         Resources resources = context.getResources();
         String[] defaultRenderers = resources.getStringArray(R.array.renderer_values);
         String[] defaultRendererNames = resources.getStringArray(R.array.renderer);
-        boolean deviceHasVulkan = checkVulkanSupport(context.getPackageManager());
-        // Current Mesa requires API29+
-        boolean deviceCompatibleMesa = SDK_INT >= 29;
-        boolean deviceHasOpenGLES3 = JREUtils.getDetectedVersion() >= 3;
-        // LTW is an optional dependency
-        boolean appHasLtw = new File(Tools.NATIVE_LIB_DIR, "libltw.so").exists();
         List<String> rendererIds = new ArrayList<>(defaultRenderers.length);
-        List<String> rendererNames = new ArrayList<>(defaultRendererNames.length);
         for(int i = 0; i < defaultRenderers.length; i++) {
-            String rendererId = defaultRenderers[i];
-            if(rendererId.contains("vulkan") && !deviceHasVulkan) continue;
-            if(rendererId.contains("zink") && !deviceCompatibleMesa) continue;
-            // freedreno is available only on Adreno GPUs
-            if(rendererId.contains("freedreno") && (!(GLInfoUtils.getGlInfo().isAdreno()) || !deviceCompatibleMesa)) continue;
-            if(rendererId.contains("ltw") && (!deviceHasOpenGLES3 || !appHasLtw)) continue;
-            rendererIds.add(rendererId);
-            rendererNames.add(defaultRendererNames[i]);
+            rendererIds.add(defaultRenderers[i]);
         }
-        sCompatibleRenderers = new RenderersList(rendererIds,
-                rendererNames.toArray(new String[0]));
-
+        sCompatibleRenderers = new RenderersList(rendererIds, defaultRendererNames);
         return sCompatibleRenderers;
     }
 
-    /** Checks if the renderer Id is compatible with the current device */
+    /** Always return true - let user pick any renderer */
     public static boolean checkRendererCompatible(Context context, String rendererName) {
-         return getCompatibleRenderers(context).rendererIds.contains(rendererName);
+         return true;
     }
 
     /** Releases the cache of compatible renderers. */
