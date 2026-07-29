@@ -24,33 +24,16 @@
 # Option screens
  -keep class net.kdt.pojavlaunch.prefs.screens** {*;}
 
-# Gson model classes - keep all fields for serialization/deserialization
--keep class net.kdt.pojavlaunch.modloaders.modpacks.models.** { *; }
--keep class net.kdt.pojavlaunch.modloaders.BTAUtils$** { *; }
--keep class net.kdt.pojavlaunch.modloaders.FabriclikeUtils$FabricVersion { *; }
--keep class net.kdt.pojavlaunch.authenticator.model.** { *; }
--keep class net.kdt.pojavlaunch.authenticator.accounts.** { *; }
--keep class net.kdt.pojavlaunch.authenticator.impl.** { *; }
--keep class net.kdt.pojavlaunch.JAssets { *; }
--keep class net.kdt.pojavlaunch.JVersionList$Version { *; }
--keep class net.kdt.pojavlaunch.customcontrols.ControlData { *; }
--keep class net.kdt.pojavlaunch.customcontrols.ControlDrawerData { *; }
--keep class net.kdt.pojavlaunch.customcontrols.CustomControls { *; }
--keep class net.kdt.pojavlaunch.instances.** { *; }
--keep class net.kdt.pojavlaunch.lifecycle.** { *; }
+# Keep the main application package and all its subpackages
+-keep class net.kdt.pojavlaunch.** { *; }
+-keep class com.kdt.** { *; }
+-keep class net.objecthunter.exp4j.ExpressionBuilder** { *; }
 -keep class com.google.gson.** { *; }
 -keepattributes Signature
 -keepattributes *Annotation*
-
-# Gson: prevent R8 from merging/collapsing classes used by Gson
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }
--keep,allowobfuscation class * extends com.google.gson.TypeAdapter
--keepclassmembers class * {
-    <fields>;
-}
--keep class * implements com.google.gson.TypeAdapterFactory
 -dontwarn com.google.gson.**
 
 
