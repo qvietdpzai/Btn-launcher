@@ -29,12 +29,15 @@
 -keep class net.kdt.pojavlaunch.modloaders.BTAUtils$** { *; }
 -keep class net.kdt.pojavlaunch.modloaders.FabriclikeUtils$FabricVersion { *; }
 -keep class net.kdt.pojavlaunch.authenticator.model.** { *; }
+-keep class net.kdt.pojavlaunch.authenticator.accounts.** { *; }
+-keep class net.kdt.pojavlaunch.authenticator.impl.** { *; }
 -keep class net.kdt.pojavlaunch.JAssets { *; }
 -keep class net.kdt.pojavlaunch.JVersionList$Version { *; }
 -keep class net.kdt.pojavlaunch.customcontrols.ControlData { *; }
 -keep class net.kdt.pojavlaunch.customcontrols.ControlDrawerData { *; }
 -keep class net.kdt.pojavlaunch.customcontrols.CustomControls { *; }
 -keep class net.kdt.pojavlaunch.instances.** { *; }
+-keep class net.kdt.pojavlaunch.lifecycle.** { *; }
 -keep class com.google.gson.** { *; }
 -keepattributes Signature
 -keepattributes *Annotation*
