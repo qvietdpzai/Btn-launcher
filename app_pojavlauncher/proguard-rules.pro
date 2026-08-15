@@ -36,4 +36,10 @@
 }
 -dontwarn com.google.gson.**
 
+# JNI bindings: native code (libglfw.so) resolves these classes and methods by
+# name (GetStaticMethodID), so R8 must not strip or rename them.
+# Without this, opening the custom controls editor crashes with
+# NoSuchMethodError: GLFW.receiveGrabState(Z)V
+-keep class git.artdeell.dnbootstrap.glfw.** { *; }
+
 
