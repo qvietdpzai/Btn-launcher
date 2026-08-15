@@ -1,35 +1,16 @@
 plugins {
     id 'com.android.application' version '8.11.1'
     id 'de.undercouch.download' version '5.6.0'
-    id 'org.ajoberstar.grgit' version '5.3.2'
 }
 
 apply from: rootProject.file('gradle/prefab_bypass.gradle')
 
 import de.undercouch.gradle.tasks.download.Download
 
-static def getDate() { return new Date().format('yyyyMMdd') }
+// v1.0.0 stable release
+static def getVersionCode() { return 100 }
 
-static def getDateSeconds() {
-    if (System.getenv("GITHUB_ACTIONS") == "true") {
-        return Integer.parseInt(System.getenv("GITHUB_RUN_NUMBER"))
-    } else {
-        return 172005
-    }
-}
-
-def getVersionName = {
-    def currentBranch = grgit.branch.current()
-    def latestCommit = grgit.log(maxCommits: 1)
-    def dateToday = getDate()
-    if(currentBranch == null || latestCommit == null) {
-        return "LOCAL-${dateToday}"
-    }else {
-        def branchName = currentBranch.getName()
-        def commitAbbreviation = latestCommit.abbreviatedId
-        return "iris-${dateToday}-${commitAbbreviation}-${branchName}"
-    }
-}
+static def getVersionName() { return "1.0.0" }
 
 def getCFApiKey = {
     String key = System.getenv("CURSEFORGE_API_KEY")
@@ -83,7 +64,7 @@ android {
         applicationId "git.artdeell.mjlaunch"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode getDateSeconds()
+        versionCode getVersionCode()
         versionName getVersionName()
         multiDexEnabled false //important
         resValue 'string', 'curseforge_api_key', getCFApiKey()
