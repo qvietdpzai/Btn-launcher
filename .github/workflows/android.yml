@@ -87,11 +87,12 @@ jobs:
             tag_name: nightly
             body: |
               BtnLauncher nightly build.
-            Commit hash: ${{ github.sha }}
-          files: |
-            out/BtnLauncher-release.apk
+              Commit hash: ${{ github.sha }}
+            files: |
+              out/BtnLauncher-release.apk
 
       - name: Upload AAB
+        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
