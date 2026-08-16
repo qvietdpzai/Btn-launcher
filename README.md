@@ -8,6 +8,12 @@
 
 * It can run almost every version of Minecraft, allowing you to use .jar only installers to install modloaders such as [Forge](https://files.minecraftforge.net/) and [Fabric](http://fabricmc.net/) and mods like [OptiFine](https://optifine.net).
 
+## Legal
+- BtnLauncher does **not** include or redistribute Minecraft: Java Edition, its assets, or any proprietary game files. Game versions, assets and libraries are downloaded at runtime from the official Mojang/Microsoft servers using your own account.
+- You must own a Minecraft: Java Edition account and log in with it to play.
+- BtnLauncher is an independent project and is **not affiliated with, endorsed by, or sponsored by Mojang Studios, Microsoft, or any of their affiliates**. Minecraft is a trademark of Mojang Synergies AB. Use of the name is for identification only.
+- This project is open source under the GNU LGPLv3 license — see [LICENSE](LICENSE) and the third-party list below.
+
 ## Building   
 * Build the launcher (it will automatically download all required components)
 ```
