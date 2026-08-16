@@ -8,13 +8,44 @@
     android:layout_height="match_parent"
     android:background="@color/background_app">
 
+    <!-- App logo header -->
+    <LinearLayout
+        android:id="@+id/logo_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/sidebar_background"
+        android:paddingHorizontal="@dimen/padding_large"
+        android:paddingVertical="@dimen/padding_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/btnlauncher_logo"
+            android:contentDescription="@string/app_short_name"
+            android:scaleType="fitCenter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_short_name"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_16ssp"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/padding_medium" />
+    </LinearLayout>
+
     <!-- Content grid (top, scrollable) -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="@dimen/padding_large"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo_header"
         app:layout_constraintBottom_toTopOf="@id/sidebar_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout

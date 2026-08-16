@@ -7,10 +7,10 @@ apply from: rootProject.file('gradle/prefab_bypass.gradle')
 
 import de.undercouch.gradle.tasks.download.Download
 
-// v1.0.1 stable release (fixes GLFW JNI NoSuchMethodError in custom controls)
-static def getVersionCode() { return 101 }
+// v1.0.2 stable release (adds new app logo/icon)
+static def getVersionCode() { return 102 }
 
-static def getVersionName() { return "1.0.1" }
+static def getVersionName() { return "1.0.2" }
 
 def getCFApiKey = {
     String key = System.getenv("CURSEFORGE_API_KEY")
