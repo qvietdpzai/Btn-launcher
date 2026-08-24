@@ -38,7 +38,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: gradle
       - name: Create out directory
         run: mkdir out
       - name: Build Publishing .aab
