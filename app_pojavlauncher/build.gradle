@@ -106,13 +106,10 @@ android {
         }
 
         release {
-            // Don't set to true or java.awt will be a.a or something similar.
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.customDebug
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // defaultConfig already set
-            // multiDexEnabled = true
-            // debuggable = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mjlaunch.scoped.gamefolder'
             resValue 'string', 'application_package', 'git.artdeell.mjlaunch'
         }
