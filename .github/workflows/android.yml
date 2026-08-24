@@ -15,7 +15,7 @@ jobs:
       CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -34,10 +34,11 @@ jobs:
           gradle-version: "8.14.3"
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: gradle
       - name: Create out directory
         run: mkdir out
       - name: Build Publishing .aab
@@ -49,17 +50,17 @@ jobs:
       - name: Build Debug .apk
         run: |
           # Build the launcher
-          gradle :app_pojavlauncher:assembleFullDebug
+          gradle :app_pojavlauncher:assembleFullDebug --no-daemon --stacktrace
           mv app_pojavlauncher/build/outputs/apk/full/debug/app_pojavlauncher-full-debug.apk out/app-debug-full.apk
 
       - name: Build Debug .apk (No runtime)
         run: |
-          gradle :app_pojavlauncher:assembleNoruntimeDebug
+          gradle :app_pojavlauncher:assembleNoruntimeDebug --no-daemon --stacktrace
           mv app_pojavlauncher/build/outputs/apk/noruntime/debug/app_pojavlauncher-noruntime-debug.apk out/app-debug-noruntime.apk
       - name: Build Nightly Release .apk
         if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         run: |
-          gradle :app_pojavlauncher:assembleFullPubRelease
+          gradle :app_pojavlauncher:assembleFullPubRelease --no-daemon --stacktrace
           mv app_pojavlauncher/build/outputs/apk/full/pubRelease/app_pojavlauncher-full-pubRelease.apk out/BtnLauncher-release.apk
       - name: Gen md5sums
         run: |

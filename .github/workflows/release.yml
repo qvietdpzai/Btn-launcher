@@ -33,6 +33,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -47,7 +48,7 @@ jobs:
 
       - name: Build Release APK
         run: |
-          ./gradlew :app_pojavlauncher:assembleFullProguardNoDebug
+          ./gradlew :app_pojavlauncher:assembleFullProguardNoDebug --no-daemon --stacktrace
           cp app_pojavlauncher/build/outputs/apk/full/proguardNoDebug/app_pojavlauncher-full-proguardNoDebug.apk "BtnLauncher-${GITHUB_REF_NAME}.apk"
 
       - name: Upload Release
