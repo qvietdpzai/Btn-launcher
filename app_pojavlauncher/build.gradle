@@ -7,10 +7,10 @@ apply from: rootProject.file('gradle/prefab_bypass.gradle')
 
 import de.undercouch.gradle.tasks.download.Download
 
-// v1.0.2 stable release (adds new app logo/icon)
-static def getVersionCode() { return 102 }
+// v1.1.3 stable release
+static def getVersionCode() { return 113 }
 
-static def getVersionName() { return "1.0.2" }
+static def getVersionName() { return "1.1.3" }
 
 def getCFApiKey = {
     String key = System.getenv("CURSEFORGE_API_KEY")
