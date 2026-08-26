@@ -190,9 +190,9 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="@color/sidebar_background"
+        android:elevation="@dimen/_4sdp"
         android:paddingHorizontal="@dimen/padding_large"
         android:paddingVertical="@dimen/padding_large"
-        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

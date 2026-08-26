@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="m3_primary">#17A2B8</color>
+    <color name="m3_primary_variant">#138496</color>
+    <color name="m3_on_primary">#FFFFFF</color>
+    <color name="m3_surface">#121218</color>
+    <color name="m3_surface_variant">#1C1C24</color>
+    <color name="m3_on_surface">#EAEAEA</color>
+    <color name="m3_outline">#2A2A33</color>
+    <color name="m3_divider">#1F1F28</color>
+</resources>
