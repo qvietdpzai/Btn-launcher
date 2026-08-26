@@ -8,9 +8,9 @@ apply from: rootProject.file('gradle/prefab_bypass.gradle')
 import de.undercouch.gradle.tasks.download.Download
 
 // v1.1.3 stable release
-static def getVersionCode() { return 113 }
+static def getVersionCode() { return 140 }
 
-static def getVersionName() { return "1.1.3" }
+static def getVersionName() { return "1.4.0" }
 
 def getCFApiKey = {
     String key = System.getenv("CURSEFORGE_API_KEY")
