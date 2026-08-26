@@ -13,6 +13,10 @@ import net.kdt.pojavlaunch.CallbackBridge;
 
 @RequiresApi(api = 24)
 public class VulkanSurfaceProvider implements SurfaceProvider {
+    static {
+        System.loadLibrary("pojavexec");
+    }
+
     private VulkanSurfaceView mSurfaceView;
 
     @Override
@@ -49,4 +53,10 @@ public class VulkanSurfaceProvider implements SurfaceProvider {
             @Override public void surfaceDestroyed(@NonNull SurfaceHolder holder) { mCallback.onSurfaceDestroyed(); }
         }
     }
+
+    // Native methods
+    private static native boolean nativeInitVulkan(android.view.Surface surface);
+    private static native boolean nativeCreateSwapchain(int width, int height);
+    private static native void nativeRenderFrame();
+    private static native void nativeCleanup();
 }
