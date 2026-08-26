@@ -2,35 +2,24 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/_14sdp" />
-            <solid android:color="@color/button_play_pressed" />
-            <padding
-                android:left="@dimen/_12sdp"
-                android:top="@dimen/_12sdp"
-                android:right="@dimen/_12sdp"
-                android:bottom="@dimen/_12sdp" />
+            <corners android:radius="@dimen/_28sdp" />
+            <gradient android:startColor="@color/button_play_pressed"
+                android:endColor="@color/m3_primary"
+                android:angle="90" />
         </shape>
     </item>
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/_14sdp" />
+            <corners android:radius="@dimen/_28sdp" />
             <solid android:color="@color/background_overlay" />
-            <padding
-                android:left="@dimen/_12sdp"
-                android:top="@dimen/_12sdp"
-                android:right="@dimen/_12sdp"
-                android:bottom="@dimen/_12sdp" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/_14sdp" />
-            <solid android:color="@color/button_play_normal" />
-            <padding
-                android:left="@dimen/_12sdp"
-                android:top="@dimen/_12sdp"
-                android:right="@dimen/_12sdp"
-                android:bottom="@dimen/_12sdp" />
+            <corners android:radius="@dimen/_28sdp" />
+            <gradient android:startColor="@color/m3_primary"
+                android:endColor="@color/m3_primary_variant"
+                android:angle="90" />
         </shape>
     </item>
 </selector>

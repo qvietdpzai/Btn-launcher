@@ -6,7 +6,7 @@
     android:id="@+id/fragment_menu_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_app">
+    android:background="@drawable/background_app_gradient">
 
     <!-- App logo header -->
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="@color/sidebar_background"
+        android:background="@color/m3_surface_variant"
         android:paddingHorizontal="@dimen/padding_large"
         android:paddingVertical="@dimen/padding_medium"
         app:layout_constraintTop_toTopOf="parent"

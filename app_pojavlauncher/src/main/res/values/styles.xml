@@ -17,7 +17,7 @@
 
     <!-- Modern menu button -->
     <style name="LauncherMenuButton" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:layout_height">@dimen/_66sdp</item>
+        <item name="android:layout_height">@dimen/_60sdp</item>
         <item name="strokeColor">@color/m3_outline</item>
         <item name="android:textColor">@color/m3_on_surface</item>
         <item name="android:gravity">center_vertical|start</item>
@@ -29,7 +29,7 @@
     </style>
 
     <style name="LauncherMenuButton.Universal" parent="LauncherMenuButton">
-        <item name="android:layout_height">@dimen/_66sdp</item>
+        <item name="android:layout_height">@dimen/_60sdp</item>
     </style>
 
     <style name="LauncherFragment_Divider">
