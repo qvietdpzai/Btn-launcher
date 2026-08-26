@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.kdt.mcgui.mcVersionSpinner;
 
 import net.kdt.pojavlaunch.CustomControlsActivity;
@@ -50,24 +50,35 @@ public class MainMenuFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button mNewsButton = view.findViewById(R.id.news_button);
-        Button mDiscordButton = view.findViewById(R.id.social_media_button);
-        Button mCustomControlButton = view.findViewById(R.id.custom_control_button);
-        Button mInstallJarButton = view.findViewById(R.id.install_jar_button);
-        Button mShareLogsButton = view.findViewById(R.id.share_logs_button);
-        Button mOpenDirectoryButton = view.findViewById(R.id.open_files_button);
+        MaterialButton mNewsButton = view.findViewById(R.id.news_button);
+        MaterialButton mDiscordButton = view.findViewById(R.id.social_media_button);
+        MaterialButton mCustomControlButton = view.findViewById(R.id.custom_control_button);
+        MaterialButton mInstallJarButton = view.findViewById(R.id.install_jar_button);
+        MaterialButton mShareLogsButton = view.findViewById(R.id.share_logs_button);
+        MaterialButton mOpenDirectoryButton = view.findViewById(R.id.open_files_button);
 
-        ImageButton mEditProfileButton = view.findViewById(R.id.edit_profile_button);
-        Button mPlayButton = view.findViewById(R.id.play_button);
-        mVersionSpinner = view.findViewById(R.id.mc_version_spinner);
+        MaterialButton mEditProfileButton = view.findViewById(R.id.edit_profile_button);
+        MaterialButton mPlayButton = view.findViewById(R.id.play_button);
+        
+        TextInputLayout versionSpinnerLayout = view.findViewById(R.id.version_spinner_layout);
+        mVersionSpinner = versionSpinnerLayout != null ? 
+            versionSpinnerLayout.findViewById(R.id.mc_version_spinner) : 
+            view.findViewById(R.id.mc_version_spinner);
 
         mNewsButton.setOnClickListener(v -> Tools.openURL(requireActivity(), Tools.URL_HOME));
         mDiscordButton.setOnClickListener(v -> Tools.openURL(requireActivity(), getString(R.string.social_media_invite)));
         mCustomControlButton.setOnClickListener(v -> startActivity(new Intent(requireContext(), CustomControlsActivity.class)));
         mInstallJarButton.setOnClickListener(v -> runInstallerWithConfirmation());
-        mEditProfileButton.setOnClickListener(v -> mVersionSpinner.openProfileEditor(requireActivity()));
+        
+        if (mEditProfileButton != null) {
+            mEditProfileButton.setOnClickListener(v -> {
+                if (mVersionSpinner != null) {
+                    mVersionSpinner.openProfileEditor(requireActivity());
+                }
+            });
+        }
 
-        Button mSearchModsButton = view.findViewById(R.id.search_mods_button);
+        MaterialButton mSearchModsButton = view.findViewById(R.id.search_mods_button);
         mSearchModsButton.setOnClickListener(v -> Tools.swapFragment(requireActivity(), SearchModFragment.class, SearchModFragment.TAG, null));
 
         mPlayButton.setOnClickListener(v -> ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true));
@@ -76,12 +87,11 @@ public class MainMenuFragment extends Fragment {
 
         mOpenDirectoryButton.setOnClickListener((v)-> openGameDirectory(v.getContext()));
 
-        Button mZeroTierButton = view.findViewById(R.id.zerotier_button);
+        MaterialButton mZeroTierButton = view.findViewById(R.id.zerotier_button);
         mZeroTierButton.setOnClickListener(v -> toggleZeroTier(mZeroTierButton));
 
-        Button mAiTurboButton = view.findViewById(R.id.aiturbo_button);
+        MaterialButton mAiTurboButton = view.findViewById(R.id.aiturbo_button);
         mAiTurboButton.setOnClickListener(v -> toggleAiTurbo(mAiTurboButton));
-
 
         mNewsButton.setOnLongClickListener((v)->{
             Tools.swapFragment(requireActivity(), GamepadMapperFragment.class, GamepadMapperFragment.TAG, null);
@@ -103,7 +113,7 @@ public class MainMenuFragment extends Fragment {
         }
     }
 
-    private void toggleZeroTier(Button button) {
+    private void toggleZeroTier(MaterialButton button) {
         ZeroTierManager ztManager = ZeroTierManager.getInstance(requireContext());
         if (ztManager.isConnected()) {
             ztManager.disconnect();
@@ -157,7 +167,7 @@ public class MainMenuFragment extends Fragment {
         }
     }
 
-    private void toggleAiTurbo(Button button) {
+    private void toggleAiTurbo(MaterialButton button) {
         AiTurboManager aiTurbo = AiTurboManager.getInstance(requireContext());
         if (aiTurbo.isEnabled()) {
             aiTurbo.setEnabled(false);
