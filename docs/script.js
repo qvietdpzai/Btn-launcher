@@ -24,6 +24,7 @@ function detectOS() {
     const p = (navigator.userAgent || '').toLowerCase();
     if (p.includes('win')) return 'windows';
     if (p.includes('mac')) return 'macos';
+    if (p.includes('android')) return 'windows'; // Android UA contains "Linux"
     if (p.includes('linux')) return 'linux';
     return 'windows'; // default
 }
@@ -61,7 +62,7 @@ function formatCount(n) {
 }
 
 async function init() {
-    const os = detectOS();
+    let os = detectOS();
     setActiveTab(os);
 
     try {
