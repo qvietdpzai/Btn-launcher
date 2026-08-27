@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BtnLauncher — Tải Launcher Minecraft</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1 class="logo">Btn<span>Launcher</span></h1>
+            <p class="tagline">Launcher Minecraft hiện đại cho PC & Mobile</p>
+            <div class="stats" id="stats">
+                <span id="total-downloads">—</span> lượt tải
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="products">
+            <!-- Mobile -->
+            <article class="card" id="card-mobile">
+                <div class="card-icon">📱</div>
+                <h2>BtnLauncher <span class="badge">Mobile</span></h2>
+                <p class="desc">Launcher Minecraft Java cho Android. Hỗ trợ mod, shader, controller.</p>
+                <div class="version" id="mobile-version">Đang tải...</div>
+                <div class="download-row">
+                    <a class="btn btn-primary" id="mobile-download" href="#" download>
+                        ⬇ Tải APK
+                    </a>
+                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btn-Launcher/releases" target="_blank">
+                        GitHub
+                    </a>
+                </div>
+                <div class="platform-note">Yêu cầu: Android 5.0+ (API 21)</div>
+            </article>
+
+            <!-- PC -->
+            <article class="card" id="card-pc">
+                <div class="card-icon">💻</div>
+                <h2>BtnLauncher2 <span class="badge">PC</span></h2>
+                <p class="desc">Launcher đa nền tảng: Windows, macOS, Linux. Dựa trên Electron.</p>
+                <div class="version" id="pc-version">Đang tải...</div>
+                <div class="os-tabs" id="os-tabs">
+                    <button class="os-tab active" data-os="windows">Windows</button>
+                    <button class="os-tab" data-os="macos">macOS</button>
+                    <button class="os-tab" data-os="linux">Linux</button>
+                </div>
+                <div class="download-row">
+                    <a class="btn btn-primary" id="pc-download" href="#" download>
+                        ⬇ Tải cho <span id="pc-os-label">Windows</span>
+                    </a>
+                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btnlaucher2-pc/releases" target="_blank">
+                        GitHub
+                    </a>
+                </div>
+                <div class="platform-note" id="pc-platform-note"></div>
+            </article>
+        </section>
+
+        <footer>
+            <p>BtnLauncher không liên kết với Mojang / Microsoft. Minecraft là thương hiệu của Mojang Studios.</p>
+            <p>© 2026 qvietdpzai — <a href="https://github.com/qvietdpzai">GitHub</a></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
