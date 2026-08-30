@@ -3,45 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BtnLauncher — Launcher Minecraft Java hiện đại cho PC và Mobile. Tải miễn phí.">
+    <meta name="theme-color" content="#0A0A0F">
     <title>BtnLauncher — Tải Launcher Minecraft</title>
+    <link rel="preconnect" href="https://api.github.com">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛏%EF%B8%8F</text></svg>">
 </head>
 <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-dust" aria-hidden="true"></div>
+    <div class="bg-vignette" aria-hidden="true"></div>
+
     <header class="hero">
         <div class="container">
-            <h1 class="logo">Btn<span>Launcher</span></h1>
-            <p class="tagline">Launcher Minecraft hiện đại cho PC & Mobile</p>
+            <div class="logo-wrap">
+                <h1 class="logo" data-text="BtnLauncher">
+                    <span class="logo-layer logo-layer--main">Btn<span class="accent">Launcher</span></span>
+                    <span class="logo-layer logo-layer--shadow" aria-hidden="true">Btn<span class="accent">Launcher</span></span>
+                    <span class="logo-layer logo-layer--glitch" aria-hidden="true">Btn<span class="accent">Launcher</span></span>
+                </h1>
+                <span class="version-badge">v1.4.0</span>
+            </div>
+            <p class="tagline">Launcher Minecraft hiện đại cho PC &amp; Mobile</p>
             <div class="stats" id="stats">
                 <span id="total-downloads">—</span> lượt tải
+            </div>
+            <div class="hero-cubes" aria-hidden="true">
+                <span class="cube cube--1"></span>
+                <span class="cube cube--2"></span>
+                <span class="cube cube--3"></span>
+                <span class="cube cube--4"></span>
             </div>
         </div>
     </header>
 
     <main class="container">
         <section class="products">
-            <!-- Mobile -->
-            <article class="card" id="card-mobile">
-                <div class="card-icon">📱</div>
+            <article class="card card--mobile" id="card-mobile">
+                <div class="card-glow" aria-hidden="true"></div>
+                <div class="card-icon" aria-hidden="true">📱</div>
                 <h2>BtnLauncher <span class="badge">Mobile</span></h2>
                 <p class="desc">Launcher Minecraft Java cho Android. Hỗ trợ mod, shader, controller.</p>
-                <div class="version" id="mobile-version">Đang tải...</div>
+                <div class="version version--loading" id="mobile-version">Đang tải...</div>
                 <div class="download-row">
                     <a class="btn btn-primary" id="mobile-download" href="#" download>
-                        ⬇ Tải APK
+                        <span class="btn-icon" aria-hidden="true">⬇</span>
+                        <span>Tải APK</span>
                     </a>
-                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btn-Launcher/releases" target="_blank">
-                        GitHub
-                    </a>
+                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btn-Launcher/releases" target="_blank" rel="noopener">GitHub</a>
                 </div>
                 <div class="platform-note">Yêu cầu: Android 5.0+ (API 21)</div>
             </article>
 
-            <!-- PC -->
-            <article class="card" id="card-pc">
-                <div class="card-icon">💻</div>
+            <article class="card card--pc" id="card-pc">
+                <div class="card-glow" aria-hidden="true"></div>
+                <div class="card-icon" aria-hidden="true">💻</div>
                 <h2>BtnLauncher2 <span class="badge">PC</span></h2>
                 <p class="desc">Launcher đa nền tảng: Windows, macOS, Linux. Dựa trên Electron.</p>
-                <div class="version" id="pc-version">Đang tải...</div>
+                <div class="version version--loading" id="pc-version">Đang tải...</div>
                 <div class="os-tabs" id="os-tabs">
                     <button class="os-tab active" data-os="windows">Windows</button>
                     <button class="os-tab" data-os="macos">macOS</button>
@@ -49,19 +69,19 @@
                 </div>
                 <div class="download-row">
                     <a class="btn btn-primary" id="pc-download" href="#" download>
-                        ⬇ Tải cho <span id="pc-os-label">Windows</span>
+                        <span class="btn-icon" aria-hidden="true">⬇</span>
+                        <span>Tải cho <span id="pc-os-label">Windows</span></span>
                     </a>
-                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btnlaucher2-pc/releases" target="_blank">
-                        GitHub
-                    </a>
+                    <a class="btn btn-ghost" href="https://github.com/qvietdpzai/Btnlaucher2-pc/releases" target="_blank" rel="noopener">GitHub</a>
                 </div>
                 <div class="platform-note" id="pc-platform-note"></div>
             </article>
         </section>
 
         <footer>
+            <div class="footer-scanline" aria-hidden="true"></div>
             <p>BtnLauncher không liên kết với Mojang / Microsoft. Minecraft là thương hiệu của Mojang Studios.</p>
-            <p>© 2026 qvietdpzai — <a href="https://github.com/qvietdpzai">GitHub</a></p>
+            <p>© 2026 qvietdpzai — <a href="https://github.com/qvietdpzai" target="_blank" rel="noopener">GitHub</a></p>
         </footer>
     </main>
 
